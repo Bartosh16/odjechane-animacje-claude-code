@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<title>Jak robić animacje w Claude Code</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    width: 1920px;
+    height: 1080px;
+    overflow: hidden;
+    background: #0f0f14;
+    font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
+    color: #f5f5f7;
+  }
+
+  .stage {
+    position: relative;
+    width: 1920px;
+    height: 1080px;
+    background: radial-gradient(ellipse at 30% 20%, #2a1f3d 0%, #0f0f14 60%);
+    overflow: hidden;
+  }
+
+  /* Delikatne świecące kule w tle */
+  .orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.45;
+    animation: float 5s ease-in-out infinite alternate;
+  }
+  .orb.a { width: 520px; height: 520px; background: #d97757; top: -120px; right: 160px; }
+  .orb.b { width: 420px; height: 420px; background: #7c5cff; bottom: -140px; left: 120px; animation-delay: -2s; }
+
+  @keyframes float {
+    from { transform: translate(0, 0) scale(1); }
+    to   { transform: translate(40px, 30px) scale(1.08); }
+  }
+
+  /* Nagłówek */
+  .title {
+    position: absolute;
+    top: 120px;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    opacity: 0;
+    animation: fadeDown 0.8s ease-out 0.2s forwards;
+  }
+  .title h1 {
+    font-size: 84px;
+    font-weight: 700;
+    letter-spacing: -1px;
+  }
+  .title h1 span {
+    background: linear-gradient(90deg, #d97757, #f2a65a);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .title p {
+    margin-top: 16px;
+    font-size: 32px;
+    color: #a8a8b3;
+  }
+
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-30px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Kroki */
+  .steps {
+    position: absolute;
+    top: 400px;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+  }
+
+  .step {
+    width: 380px;
+    height: 360px;
+    padding: 40px 32px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 24px;
+    backdrop-filter: blur(10px);
+    opacity: 0;
+    transform: translateY(60px) scale(0.95);
+    animation: popUp 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  }
+  .step:nth-child(1) { animation-delay: 1.0s; }
+  .step:nth-child(2) { animation-delay: 1.5s; }
+  .step:nth-child(3) { animation-delay: 2.0s; }
+  .step:nth-child(4) { animation-delay: 2.5s; }
+
+  @keyframes popUp {
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  .step .num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 64px;
+    height: 64px;
+    border-radius: 16px;
+    background: linear-gradient(135deg, #d97757, #b8532f);
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 28px;
+    box-shadow: 0 8px 24px rgba(217, 119, 87, 0.4);
+  }
+  .step h3 {
+    font-size: 36px;
+    font-weight: 600;
+    margin-bottom: 14px;
+  }
+  .step p {
+    font-size: 24px;
+    line-height: 1.45;
+    color: #b8b8c4;
+  }
+  .step code {
+    font-family: "Cascadia Code", Consolas, "Courier New", monospace;
+    font-size: 21px;
+    color: #f2a65a;
+    background: rgba(242, 166, 90, 0.12);
+    padding: 2px 8px;
+    border-radius: 6px;
+  }
+
+  /* Terminal na dole */
+  .terminal {
+    position: absolute;
+    bottom: 80px;
+    left: 50%;
+    width: 1000px;
+    margin-left: -500px;
+    padding: 22px 32px;
+    background: #16161d;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    font-family: "Cascadia Code", Consolas, "Courier New", monospace;
+    font-size: 28px;
+    color: #e0e0e6;
+    opacity: 0;
+    animation: fadeUp 0.6s ease-out 3.1s forwards;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  }
+  .terminal .prompt { color: #d97757; margin-right: 14px; }
+  .terminal .typed {
+    display: inline-block;
+    overflow: hidden;
+    white-space: nowrap;
+    vertical-align: bottom;
+    width: 0;
+    animation: typing 1.2s steps(36, end) 3.4s forwards;
+  }
+  .terminal .cursor {
+    display: inline-block;
+    width: 14px;
+    height: 32px;
+    background: #d97757;
+    vertical-align: middle;
+    margin-left: 4px;
+    animation: blink 0.8s step-end infinite;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes typing {
+    to { width: 36ch; }
+  }
+  @keyframes blink {
+    50% { opacity: 0; }
+  }
+
+  /* Pasek postępu */
+  .progress {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 6px;
+    width: 0;
+    background: linear-gradient(90deg, #7c5cff, #d97757, #f2a65a);
+    animation: progress 5s linear forwards;
+  }
+  @keyframes progress {
+    to { width: 100%; }
+  }
+</style>
+</head>
+<body>
+  <div class="stage">
+    <div class="orb a"></div>
+    <div class="orb b"></div>
+
+    <div class="title">
+      <h1>Jak robić animacje w <span>Claude Code</span></h1>
+      <p>Od pomysłu do gotowej animacji w 4 krokach</p>
+    </div>
+
+    <div class="steps">
+      <div class="step">
+        <div class="num">1</div>
+        <h3>Opisz pomysł</h3>
+        <p>Napisz w prompcie, co ma się ruszać, jak długo i w jakim stylu.</p>
+      </div>
+      <div class="step">
+        <div class="num">2</div>
+        <h3>Claude pisze kod</h3>
+        <p>Dostajesz plik <code>HTML</code> z animacjami <code>CSS</code> i <code>JS</code>.</p>
+      </div>
+      <div class="step">
+        <div class="num">3</div>
+        <h3>Otwórz podgląd</h3>
+        <p>Uruchom plik w przeglądarce i zobacz efekt na żywo.</p>
+      </div>
+      <div class="step">
+        <div class="num">4</div>
+        <h3>Poprawiaj</h3>
+        <p>Proś o zmiany: tempo, kolory, efekty – aż będzie idealnie.</p>
+      </div>
+    </div>
+
+    <div class="terminal">
+      <span class="prompt">&gt;</span><span class="typed">zrób animację intro do mojego filmu</span><span class="cursor"></span>
+    </div>
+
+    <div class="progress"></div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,16 @@
+{
+  "nazwa": "plansze-powerpoint",
+  "dur": 24.0,
+  "plansze": [
+    { "typ": "teza", "t": 0.2, "etykieta": "Komentarz pod filmem", "tekst": "Twoje animacje to PowerPoint", "akcent": ["PowerPoint"] },
+    { "typ": "liczba", "t": 3.6, "etykieta": "Dowód w kodzie", "do": 36, "sufiks": "×", "podpis": "samo „pojawianie się” w jednej animacji", "pasek": 0.9 },
+    { "typ": "porownanie", "t": 7.2, "etykieta": "Różnica", "tytul": "Slajd kontra motion design", "akcent": ["motion", "design"],
+      "lewa": { "tytul": "PowerPoint", "punkty": ["scena gaśnie", "jedna krzywa", "równe odstępy"] },
+      "prawa": { "tytul": "Motion design", "punkty": ["kamera jedzie", "krzywa do roli", "ruchy na zakładkę"] } },
+    { "typ": "kroki", "t": 12.4, "etykieta": "Trzy dni", "tytul": "Cztery wersje tej samej animacji", "akcent": ["Cztery"],
+      "kroki": ["v1 slajdy", "v2 reguły", "v3 kamera", "v4 3D i muzyka"] },
+    { "typ": "lista", "t": 16.0, "etykieta": "Mój wkład", "tytul": "Co powiedziałem Claude'owi", "akcent": ["powiedziałem"],
+      "punkty": [ { "tekst": "„Ogarnij”", "ikona": "dot" }, { "tekst": "„Zalatuje PowerPointem”", "ikona": "no" }, { "tekst": "„Fajne, zapisz”", "ikona": "ok" } ] },
+    { "typ": "cytat", "t": 19.8, "etykieta": "Reguła ze skilla", "tekst": "Przejście jest wyjściem.", "akcent": ["wyjściem."], "autor": "/hyperframes-animation" }
+  ]
+}

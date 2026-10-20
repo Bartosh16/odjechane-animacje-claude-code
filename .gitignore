@@ -1,0 +1,8 @@
+vendor/
+__pycache__/
+*.pyc
+render/
+plansze-yt/przyklad/*.mp4
+plansze-yt/przyklad/*.wav
+animacja-vs/zrodla/audio/*.wav
+animacja-vs/assety/muzyka.*

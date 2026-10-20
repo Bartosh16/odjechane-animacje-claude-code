@@ -1,0 +1,154 @@
+<!DOCTYPE html><html lang="pl"><head><meta charset="UTF-8"><title>__ID__ – plansze DBest</title><script src="assets/gsap.min.js"></script><style>
+@font-face{font-family:'Oxanium';src:url(assets/Oxanium-Bold.ttf) format('truetype');font-weight:200 800}
+@font-face{font-family:'Exo 2';src:url(assets/Exo2.ttf) format('truetype');font-weight:100 900}
+@font-face{font-family:'Share Tech Mono';src:url(assets/ShareTechMono.ttf) format('truetype')}
+:root{--bg:#0a0d12;--card:#0f1520;--border:#1a2a3a;--cyan:#00d4e8;--cyan2:#00f0ff;--green:#00e8a2;--red:#ff4466;--fg:#fff;--muted:#b9c6d2}
+*{box-sizing:border-box;margin:0}
+html,body{width:1920px;height:1080px;overflow:hidden;background:var(--bg)}
+#root{position:relative;width:100%;height:100%;overflow:hidden;background:var(--bg)}
+/* tło T1: linie poziome z jitterem (bez kratki), stałe względem ekranu */
+.bg{position:absolute;inset:0;background-color:#0a0d12;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='6' height='920'%3E%3Crect y='18' width='6' height='1' fill='%23ffffff' opacity='.038'/%3E%3Crect y='54' width='6' height='1' fill='%23ffffff' opacity='.03'/%3E%3Crect y='99' width='6' height='1' fill='%2300d4e8' opacity='.07'/%3E%3Crect y='127' width='6' height='1' fill='%23ffffff' opacity='.045'/%3E%3Crect y='183' width='6' height='1' fill='%23ffffff' opacity='.028'/%3E%3Crect y='214' width='6' height='1' fill='%23ffffff' opacity='.05'/%3E%3Crect y='262' width='6' height='1' fill='%23ffffff' opacity='.034'/%3E%3Crect y='331' width='6' height='1' fill='%23ffffff' opacity='.06'/%3E%3Crect y='359' width='6' height='1' fill='%23ffffff' opacity='.026'/%3E%3Crect y='404' width='6' height='1' fill='%2300d4e8' opacity='.05'/%3E%3Crect y='466' width='6' height='1' fill='%23ffffff' opacity='.04'/%3E%3Crect y='497' width='6' height='1' fill='%23ffffff' opacity='.028'/%3E%3Crect y='549' width='6' height='1' fill='%23ffffff' opacity='.055'/%3E%3Crect y='612' width='6' height='1' fill='%23ffffff' opacity='.032'/%3E%3Crect y='641' width='6' height='1' fill='%23ffffff' opacity='.046'/%3E%3Crect y='706' width='6' height='1' fill='%23ffffff' opacity='.025'/%3E%3Crect y='738' width='6' height='1' fill='%2300d4e8' opacity='.06'/%3E%3Crect y='796' width='6' height='1' fill='%23ffffff' opacity='.04'/%3E%3Crect y='842' width='6' height='1' fill='%23ffffff' opacity='.03'/%3E%3Crect y='879' width='6' height='1' fill='%23ffffff' opacity='.05'/%3E%3C/svg%3E")}
+.halo{position:absolute;left:30%;top:20%;width:1100px;height:700px;border-radius:50%;background:radial-gradient(ellipse,rgba(0,212,232,.16) 0,rgba(0,212,232,0) 70%)}
+.viewport{position:absolute;inset:0;overflow:hidden}
+.world{position:absolute;left:0;top:0;transform-origin:0 0;will-change:transform}
+.st{position:absolute;width:1920px;height:1080px;padding:150px 170px;display:flex;flex-direction:column;justify-content:center}
+.eb{font-family:'Share Tech Mono';font-size:28px;letter-spacing:4px;text-transform:uppercase;color:var(--cyan);display:flex;align-items:center;gap:18px;margin-bottom:34px;opacity:0}
+.eb:before{content:'';width:44px;height:3px;background:var(--cyan)}
+.w{display:inline-block;opacity:0;margin-right:.24em;will-change:transform}
+.acc{color:var(--cyan2)}
+.h1{font-family:'Oxanium';font-weight:800;font-size:124px;line-height:1.05;color:var(--fg);letter-spacing:-1px}
+.h2{font-family:'Oxanium';font-weight:700;font-size:76px;line-height:1.08;color:var(--fg);margin-bottom:44px}
+.ul{display:block;height:14px;margin-top:16px;overflow:visible}
+.ul path,.ln path{fill:none;stroke:var(--cyan2);stroke-width:9;stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:1}
+.items{display:flex;flex-direction:column;gap:30px}
+.it{display:flex;align-items:center;gap:30px;font-family:'Exo 2';font-weight:650;font-size:66px;line-height:1.1;color:var(--fg)}
+.ic{width:60px;height:60px;flex:none;opacity:0}
+.ic circle,.ic path{fill:none;stroke-width:4.5;stroke-linecap:round;stroke-linejoin:round}
+.num{font-family:'Oxanium';font-weight:800;font-size:250px;line-height:1;color:var(--cyan2);font-variant-numeric:tabular-nums;transform-origin:0 85%;display:inline-block;opacity:0}
+.num small{font-size:110px;margin-left:10px}
+.cap{font-family:'Exo 2';font-weight:700;font-size:58px;letter-spacing:1px;color:var(--fg);margin-top:26px;max-width:1500px}
+.bar{width:1100px;height:18px;border-radius:9px;background:var(--border);margin-top:36px;overflow:hidden}
+.bar i{display:block;width:100%;height:100%;background:linear-gradient(90deg,#00d4e8,#00e8a2);transform-origin:0 50%;transform:scaleX(0)}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:56px}
+.col{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:44px 48px;opacity:0}
+.col.zla{border-top:5px solid var(--red)}.col.dobra{border-top:5px solid var(--green)}
+.col h3{font-family:'Oxanium';font-weight:700;font-size:56px;color:var(--fg);margin-bottom:28px}
+.col .it{font-size:48px}.col .ic{width:48px;height:48px}
+.chain{display:flex;align-items:center;flex-wrap:wrap;gap:10px 0}
+.kr{font-family:'Share Tech Mono';font-size:44px;letter-spacing:1px;color:var(--fg);padding:22px 30px;border:1px solid #00d4e866;border-radius:10px;background:#00d4e80d;opacity:0}
+.kr.last{background:var(--green);color:#05080d;border-color:var(--green)}
+.ln{width:90px;height:24px;flex:none}
+.ln path{stroke-width:5}
+.q{font-family:'Oxanium';font-weight:700;font-size:96px;line-height:1.12;color:var(--fg);max-width:1580px}
+.qa{font-family:'Share Tech Mono';font-size:32px;letter-spacing:3px;color:var(--muted);margin-top:46px;opacity:0}
+.mark{position:absolute;right:120px;top:90px;width:560px;height:460px;opacity:.9}
+</style></head><body><div id="root" data-composition-id="__ID__" data-width="1920" data-height="1080" data-duration="__DUR__" data-fps="30">
+<div class="bg"></div><div class="halo" id="halo"></div>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><filter id="mb" x="-10%" y="-10%" width="120%" height="120%"><feGaussianBlur id="mbb" stdDeviation="0 0"/></filter></svg>
+<div class="viewport" id="vp"><div class="world" id="world"></div></div>
+<audio id="sfx" src="assets/sfx.wav" data-start="0" data-duration="__DUR__" data-track-index="10" data-volume="1"></audio>
+</div><script>
+const D = __DATA__;
+const IC = {
+  ok: '<svg class="ic" viewBox="0 0 60 60"><circle cx="30" cy="30" r="25" pathLength="1" stroke="#00e8a2"/><path d="M18 31 L26 39 L43 21" pathLength="1" stroke="#00e8a2"/></svg>',
+  no: '<svg class="ic" viewBox="0 0 60 60"><circle cx="30" cy="30" r="25" pathLength="1" stroke="#ff4466"/><path d="M20 20 L40 40 M40 20 L20 40" pathLength="1" stroke="#ff4466"/></svg>',
+  dot: '<svg class="ic" viewBox="0 0 60 60"><circle cx="30" cy="30" r="25" pathLength="1" stroke="#00d4e8"/><path d="M30 30 L30.01 30" pathLength="1" stroke="#00d4e8" style="stroke-width:18"/></svg>',
+};
+const words = (s, acc = []) => s.split(' ').filter(Boolean).map((w) => `<span class="w${acc.includes(w) ? ' acc' : ''}">${w}</span>`).join('');
+const ul = () => '<svg class="ul" viewBox="0 0 100 14" preserveAspectRatio="none" style="width:420px"><path pathLength="1" d="M2 7 L98 7"/></svg>';
+
+// ---------- plansze na wspólnej mapie (wężyk), każda typu z biblioteki ----------
+const world = document.getElementById('world');
+const POS = D.plansze.map((_, i) => ({ x: i * 2240, y: (i % 2) * 720 + (i % 3 === 2 ? -360 : 0) }));
+D.plansze.forEach((p, i) => {
+  const el = document.createElement('div'); el.className = 'st'; el.id = 'p' + i;
+  el.style.left = POS[i].x + 'px'; el.style.top = POS[i].y + 'px';
+  const eb = p.etykieta ? `<div class="eb">${p.etykieta}</div>` : '';
+  let h = '';
+  if (p.typ === 'teza') h = `${eb}<div class="h1">${words(p.tekst, p.akcent || [])}</div>${ul()}`;
+  if (p.typ === 'lista') h = `${eb}<div class="h2">${words(p.tytul, p.akcent || [])}</div><div class="items">${p.punkty.map((q) => `<div class="it">${IC[q.ikona || 'dot']}<span>${words(q.tekst)}</span></div>`).join('')}</div>`;
+  if (p.typ === 'liczba') h = `${eb}<div><span class="num"><b class="n">0</b><small>${p.sufiks || ''}</small></span></div><div class="cap">${words(p.podpis)}</div><div class="bar"><i></i></div>`;
+  if (p.typ === 'porownanie') h = `${eb}<div class="h2">${words(p.tytul, p.akcent || [])}</div><div class="cols">${['lewa', 'prawa'].map((k, j) => `<div class="col ${j ? 'dobra' : 'zla'}"><h3>${p[k].tytul}</h3><div class="items">${p[k].punkty.map((q) => `<div class="it">${IC[j ? 'ok' : 'no']}<span>${words(q)}</span></div>`).join('')}</div></div>`).join('')}</div>`;
+  if (p.typ === 'kroki') h = `${eb}<div class="h2">${words(p.tytul, p.akcent || [])}</div><div class="chain">${p.kroki.map((k, j) => `${j ? '<svg class="ln" viewBox="0 0 90 24"><path pathLength="1" d="M8 12 L76 12 M66 4 L78 12 L66 20"/></svg>' : ''}<span class="kr${j === p.kroki.length - 1 ? ' last' : ''}">${k}</span>`).join('')}</div>`;
+  if (p.typ === 'cytat') h = `<svg class="mark" viewBox="0 0 560 460" aria-hidden="true"><path d="M110 0 H270 L150 440 H0 Z M400 0 H560 L440 440 H290 Z" fill="none" stroke="rgba(0,212,232,.14)" stroke-width="3"/></svg>${eb}<div class="q">${words('„' + p.tekst + '”', (p.akcent || []).flatMap((a) => [a, a + '”', '„' + a]))}</div><div class="qa">${p.autor ? '– ' + p.autor : ''}</div>`;
+  el.innerHTML = h; world.appendChild(el);
+});
+
+const tl = gsap.timeline({ paused: true });
+const F = 1 / 30, DUR = D.dur, TR = 0.62;
+const hash = (n) => { const x = Math.sin(n * 127.1 + 311.7) * 43758.5453; return x - Math.floor(x); };
+const io = gsap.parseEase('power3.inOut'), sio = gsap.parseEase('sine.inOut');
+function waterfall(nodes, t0) {
+  let t = t0;
+  [...nodes].forEach((el, i, a) => { const last = i === a.length - 1, y = i === 0 ? 80 : last ? 64 : 48, d = i === 0 ? 0.2 : last ? 0.18 : 0.15;
+    tl.set(el, { opacity: 1, y: y }, t); tl.to(el, { y: 0, duration: d, ease: 'power4.out' }, t); t += d - F; });
+  return t;
+}
+const pop = (el, t, from = 0.6) => tl.fromTo(el, { opacity: 0, scale: from, y: 20 }, { opacity: 1, scale: 1, y: 0, duration: 0.45, ease: 'power3.out' }, t);
+const drawP = (els, t, d = 0.35, st = 0) => gsap.utils.toArray(els).forEach((e, i) => tl.fromTo(e, { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: d, ease: 'power2.out' }, t + i * st));
+
+// ---------- kamera: czysta funkcja czasu, lądowanie na początku planszy ----------
+const T = D.plansze.map((p) => p.t);
+const center = (i) => ({ x: POS[i].x + 960, y: POS[i].y + 540 });
+const vp = document.getElementById('vp'), blurN = document.getElementById('mbb');
+function cam(t) {
+  let k = 0; while (k + 1 < T.length && t >= T[k + 1] - TR) k++;
+  const L = T[k];
+  let c = center(k), s = 1, roll = 0, blur = 0;
+  if (k > 0 && t < L) {                                    // lot z k-1 do k
+    const p = (t - (L - TR)) / TR, e = io(p), a = center(k - 1), b = center(k), env = Math.sin(Math.PI * sio(p));
+    c = { x: a.x + (b.x - a.x) * e, y: a.y + (b.y - a.y) * e }; s = 1 - 0.2 * env; blur = env;
+  } else {
+    const next = k + 1 < T.length ? T[k + 1] - TR : DUR, h = Math.min(1, Math.max(0, (t - L) / (next - L)));
+    s = 1 + 0.035 * sio(h);                                 // wolny najazd w holdzie
+  }
+  if (t < 0.6 && k === 0) s *= 1 + 0.12 * (1 - gsap.parseEase('power3.out')(t / 0.6));
+  const dx = 5 * Math.sin(t * 0.9), dy = 3.5 * Math.sin(t * 1.17);
+  return { x: 960 - s * c.x + dx, y: 540 - s * c.y + dy, s, blur };
+}
+const clock = { t: 0 };
+function apply(t) {
+  const c = cam(t), p = cam(Math.max(0, t - F));
+  world.style.transform = `translate(${c.x}px, ${c.y}px) scale(${c.s})`;
+  const bx = Math.min(12, Math.abs(c.x - p.x) * 0.07), by = Math.min(12, Math.abs(c.y - p.y) * 0.07);
+  if (bx < 0.4 && by < 0.4) vp.style.filter = 'none'; else { blurN.setAttribute('stdDeviation', bx.toFixed(2) + ' ' + by.toFixed(2)); vp.style.filter = 'url(#mb)'; }
+}
+apply(0);
+tl.fromTo(clock, { t: 0 }, { t: DUR, duration: DUR, ease: 'none', onUpdate: () => apply(clock.t) }, 0);
+tl.fromTo('#halo', { opacity: 0.6 }, { opacity: 1, x: 120, duration: DUR, ease: 'none' }, 0);
+
+// ---------- wejścia elementów: start jeszcze w trakcie lądowania kamery ----------
+D.plansze.forEach((p, i) => {
+  const el = document.getElementById('p' + i), L = Math.max(0.15, p.t - (i ? 0.22 : 0));
+  const eb = el.querySelector('.eb'); if (eb) tl.fromTo(eb, { opacity: 0, x: -24 }, { opacity: 1, x: 0, duration: 0.35, ease: 'power3.out' }, L);
+  if (p.typ === 'teza') { const end = waterfall(el.querySelectorAll('.h1 .w'), L + 0.08); drawP(el.querySelector('.ul path'), end + 0.05, 0.4); }
+  if (p.typ === 'lista' || p.typ === 'porownanie' || p.typ === 'kroki') waterfall(el.querySelectorAll('.h2 .w'), L + 0.08);
+  if (p.typ === 'lista') el.querySelectorAll('.it').forEach((it, j) => {
+    const tj = p.punkty[j].t !== undefined ? p.punkty[j].t : L + 0.7 + j * (p.odstep || 0.55);
+    waterfall(it.querySelectorAll('.w'), tj); const ic = it.querySelector('.ic');
+    tl.fromTo(ic, { opacity: 0, scale: 0.4 }, { opacity: 1, scale: 1, duration: 0.32, ease: 'power3.out' }, tj + 0.06); drawP(ic.querySelectorAll('circle,path'), tj + 0.06, 0.3, 0.08);
+  });
+  if (p.typ === 'liczba') {
+    const n = el.querySelector('.n'), num = el.querySelector('.num'), st = { v: 0 }, t0 = L + 0.25, cd = p.czas || 1.3;
+    tl.set(num, { opacity: 1 }, t0);
+    tl.fromTo(st, { v: 0 }, { v: p.do, duration: cd, ease: 'power3.out', immediateRender: false, onUpdate: () => { n.textContent = (p.dziesietne ? st.v.toFixed(p.dziesietne).replace('.', ',') : Math.round(st.v).toLocaleString('pl-PL')); } }, t0);
+    tl.fromTo(num, { scale: 0.55 }, { scale: 1, duration: cd, ease: 'power3.out' }, t0);
+    tl.fromTo(el.querySelector('.bar i'), { scaleX: 0 }, { scaleX: p.pasek === undefined ? 1 : p.pasek, duration: cd, ease: 'power3.out' }, t0);
+    waterfall(el.querySelectorAll('.cap .w'), t0 + 0.35);
+  }
+  if (p.typ === 'porownanie') el.querySelectorAll('.col').forEach((c, j) => {
+    const tj = L + 0.6 + j * (p.odstep || 1.2);
+    tl.fromTo(c, { opacity: 0, x: j ? 140 : -140 }, { opacity: 1, x: 0, duration: 0.5, ease: 'power3.out' }, tj);
+    c.querySelectorAll('.it').forEach((it, k) => { waterfall(it.querySelectorAll('.w'), tj + 0.3 + k * 0.32); const ic = it.querySelector('.ic'); tl.fromTo(ic, { opacity: 0, scale: 0.4 }, { opacity: 1, scale: 1, duration: 0.3, ease: 'power3.out' }, tj + 0.34 + k * 0.32); drawP(ic.querySelectorAll('circle,path'), tj + 0.34 + k * 0.32, 0.28, 0.07); });
+  });
+  if (p.typ === 'kroki') { const ks = el.querySelectorAll('.kr'), lns = el.querySelectorAll('.ln path');
+    ks.forEach((k, j) => { const tj = L + 0.6 + j * (p.odstep || 0.45); pop(k, tj, 0.8); if (j) drawP(lns[j - 1], tj - 0.2, 0.25); }); }
+  if (p.typ === 'cytat') { const end = waterfall(el.querySelectorAll('.q .w'), L + 0.12); tl.fromTo(el.querySelector('.qa'), { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.45, ease: 'power3.out' }, end + 0.15);
+    tl.fromTo(el.querySelector('.mark'), { opacity: 0, x: 60 }, { opacity: 0.9, x: 0, duration: 0.9, ease: 'power3.out' }, L); }
+  // akcent: krótki glitch RGB na słowach wyróżnionych (chromatic-glitch, czyste wyostrzenie)
+  el.querySelectorAll('.acc').forEach((a, j) => { const ta = L + 0.55 + j * 0.05, amp = { a: 0 };
+    tl.fromTo(amp, { a: 1 }, { a: 0, duration: 0.3, ease: 'power3.in', immediateRender: false, onUpdate: () => { const s = Math.floor(tl.time() * 15) + j * 7;
+      a.style.textShadow = amp.a > 0.02 ? `${((hash(s) * 2 - 1) * 9 * amp.a).toFixed(1)}px 0 rgba(255,68,102,.8), ${((hash(s + 3) * 2 - 1) * -9 * amp.a).toFixed(1)}px 0 rgba(0,240,255,.8)` : 'none'; } }, ta); });
+});
+window.__timelines['__ID__'] = tl;
+</script></body></html>

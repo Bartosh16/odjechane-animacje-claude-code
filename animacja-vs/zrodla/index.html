@@ -1,0 +1,121 @@
+<!DOCTYPE html><html lang="pl"><head><meta charset="UTF-8"><title>VS animacja w Claude Code</title>
+<script type="importmap">{ "imports": { "three": "./vendor/three/build/three.module.js", "three/addons/": "./vendor/three/examples/jsm/" } }</script>
+<script src="assets/gsap.min.js"></script>
+<style>
+@font-face{font-family:'Share Tech Mono';src:url(assets/fonts/ShareTechMono.ttf) format('truetype')}
+@font-face{font-family:'Exo 2';src:url(assets/fonts/Exo2.ttf) format('truetype');font-weight:100 900}
+@font-face{font-family:'Oxanium';src:url(assets/fonts/Oxanium-ExtraBold-static.ttf) format('truetype');font-weight:800}
+*{margin:0;box-sizing:border-box}
+html,body{width:1920px;height:1080px;overflow:hidden;background:#05080d}
+#root{position:relative;width:100%;height:100%;overflow:hidden;background:#05080d}
+#typowa{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.tag{position:absolute;left:44px;bottom:40px;max-width:1100px;padding:16px 22px;border-radius:10px;background:rgba(10,13,18,.88);border:1px solid #1a2a3a;border-left:4px solid #00d4e8;font-family:'Share Tech Mono';color:#d8e6ee;opacity:0}
+.tag b{display:block;font-weight:400;font-size:20px;letter-spacing:3px;color:#00d4e8;margin-bottom:6px}
+.tag span{font-size:24px;line-height:1.35}
+#freeze{position:absolute;inset:0;opacity:0;transform-origin:50% 50%}
+#freeze .fz{position:absolute;inset:0;background:url(assets/typowa-ostatnia.png) center/cover no-repeat}
+#freeze .rgb{mix-blend-mode:screen;opacity:0}
+#freeze .r{filter:sepia(1) saturate(9) hue-rotate(-50deg)}
+#freeze .b{filter:sepia(1) saturate(9) hue-rotate(150deg)}
+#crt{position:absolute;left:0;right:0;top:536px;height:8px;background:#e8ffff;box-shadow:0 0 40px 10px rgba(0,240,255,.7);opacity:0;transform-origin:50% 50%}
+#term{position:absolute;inset:0;background:#030507;opacity:0;display:flex;align-items:center;padding-left:300px}
+#term .line{font-family:'Share Tech Mono';font-size:76px;color:#e8f6fa;white-space:pre}
+#term .p{color:#00e8a2}
+#term .cur{display:inline-block;width:38px;height:70px;margin-left:8px;background:#00f0ff;vertical-align:-10px}
+#glwrap{position:absolute;inset:0;opacity:0}
+#gl{position:absolute;inset:0;width:100%;height:100%;display:block}
+.tex{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}
+#logo{position:absolute;left:50%;top:742px;width:380px;height:249px;margin-left:-190px;background:url(assets/tex/logo.png) center/contain no-repeat;opacity:0;filter:drop-shadow(0 0 22px rgba(0,120,255,.35))}
+</style></head><body>
+<div id="root" data-composition-id="vs" data-width="1920" data-height="1080" data-duration="31" data-fps="30">
+  <video id="typowa" src="assets/typowa.mp4" data-start="0" data-duration="5" data-track-index="1" muted playsinline></video>
+  <div class="tag" id="tag"><b>JEDEN PROMPT · ZERO POPRAWEK</b><span>„Zrób 5-sekundową animację HTML o tym, jak robić animacje w Claude Code”</span></div>
+  <div id="freeze">
+    <div class="fz" id="fz-base"></div>
+    <div class="fz rgb r"></div><div class="fz rgb b"></div>
+  </div>
+  <div id="crt"></div>
+  <div id="term"><div class="line"><span class="p">&gt; </span><span id="cmd"></span><span class="cur" id="cur"></span></div></div>
+  <div id="glwrap"><canvas id="gl" width="1920" height="1080"></canvas></div>
+  <div id="logo" aria-label="DBest Content"></div>
+  <audio id="sfx" src="assets/audio.wav" data-start="0" data-duration="31" data-track-index="10" data-volume="1"></audio>
+</div>
+<script>
+// ---------- warstwa HTML (GSAP): znacznik promptu, glitch zamrożonej klatki, terminal ----------
+const tl = gsap.timeline({ paused: true });
+const hash = (n) => { const x = Math.sin(n * 127.1 + 311.7) * 43758.5453; return x - Math.floor(x); };
+tl.fromTo('#tag', { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.4, ease: 'power3.out' }, 0.5);
+tl.to('#tag', { opacity: 0, duration: 0.15, ease: 'power1.in' }, 4.85);
+// 5.00 – klatka zamiera, slice-glitch + rozszczepienie RGB, potem gaśnie jak stary CRT
+tl.set('#freeze', { opacity: 1 }, 5.0);
+const fz = { a: 0 };
+tl.fromTo(fz, { a: 0 }, { a: 1, duration: 0.42, ease: 'power2.in', immediateRender: false, onUpdate: () => {
+  const st = Math.floor(tl.time() * 30), a = fz.a;
+  const base = document.getElementById('fz-base');
+  const cuts = [0, 14, 31, 47, 66, 83, 100];
+  const k = Math.floor(hash(st) * 6);
+  base.style.clipPath = 'none';
+  base.style.transform = `translate(${((hash(st * 7) * 2 - 1) * 60 * a).toFixed(1)}px, 0)`;
+  document.querySelectorAll('#freeze .rgb').forEach((el, i) => { el.style.opacity = String(0.65 * a); el.style.transform = `translate(${((i ? 1 : -1) * 26 * a + (hash(st * 3 + i) * 2 - 1) * 30 * a).toFixed(1)}px, ${((hash(st * 5 + i) * 2 - 1) * 8 * a).toFixed(1)}px)`;
+    el.style.clipPath = `inset(${cuts[k]}% 0 ${100 - cuts[k + 1]}% 0)`; });
+} }, 5.0);
+tl.to('#freeze', { scaleY: 0.004, scaleX: 1.08, duration: 0.12, ease: 'power4.in' }, 5.42);
+tl.set('#freeze', { opacity: 0 }, 5.55);
+tl.fromTo('#crt', { opacity: 0, scaleX: 1 }, { opacity: 1, duration: 0.02 }, 5.53);
+tl.to('#crt', { scaleX: 0.02, opacity: 0, duration: 0.14, ease: 'power3.in' }, 5.56);
+// 5.62 – terminal: „zrób to porządnie”, enter, czerń na uderzenie
+tl.set('#term', { opacity: 1 }, 5.6);
+const CMD = 'zrób to porządnie', ty = { n: 0 };
+tl.fromTo(ty, { n: 0 }, { n: CMD.length, duration: 0.34, ease: 'none', immediateRender: false, onUpdate: () => { document.getElementById('cmd').textContent = CMD.slice(0, Math.round(ty.n)); } }, 5.66);
+tl.set('#cur', { opacity: 0 }, 5.62); tl.set('#cur', { opacity: 1 }, 5.66); tl.set('#cur', { opacity: 0 }, 6.08);
+tl.to('#term .line', { color: '#00f0ff', duration: 0.04 }, 6.04);
+tl.set('#term', { opacity: 0 }, 6.18);
+tl.set('#glwrap', { opacity: 1 }, 6.18);
+// logo DBest na końcu: wejście spring-pop po wybuchu lockupu, potem trzyma do końca
+tl.fromTo('#logo', { opacity: 0, scale: 0.7, y: 18 }, { opacity: 1, scale: 1, y: 0, duration: 0.5, ease: 'power3.out' }, 29.3);
+window.__timelines['vs'] = tl;
+</script>
+<script type="module">
+import * as THREE from 'three';
+import { makeRenderer, makeComposer, loadTex, W, H } from './swiat/wspolne.js';
+import { loadFont, makeEnv } from './swiat/elementy.js';
+import { buildWorld, BEAT } from './swiat/sekwencja.js';
+
+const TEX = {};
+for (const k of ['niebo', 'przepasc', 'swiatlo', 's0', 's1', 's2', 's3', 's4', 's5', 's6', 's7']) TEX[k] = await loadTex('assets/tex/' + k + '.jpg');
+TEX.logo = await loadTex('assets/tex/logo.png');
+await document.fonts.load("40px 'Share Tech Mono'"); await document.fonts.load("600 40px 'Exo 2'");
+const font = await loadFont('assets/fonts/Oxanium-ExtraBold-static.ttf');
+const renderer = makeRenderer(document.getElementById('gl'));
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0.008, 0.016, 0.028);
+scene.fog = new THREE.FogExp2(new THREE.Color(0.01, 0.025, 0.04), 0.00016);
+const env = makeEnv(renderer);
+scene.add(new THREE.HemisphereLight(0xa8e8ff, 0x05080d, 1.6));
+const key = new THREE.DirectionalLight(0xe6fbff, 3.2); key.position.set(-0.4, 0.7, 1.0); scene.add(key);
+const images = {};
+['s0', 's1', 's2', 's3', 's4', 's5', 's6', 's7', 'niebo', 'przepasc', 'swiatlo', 'logo'].forEach((k) => { images[k] = TEX[k]; });
+const cam = new THREE.PerspectiveCamera(36, W / H, 1, 80000);
+const world = buildWorld(scene, { font, env, images });
+scene.updateMatrixWorld(true);
+const { comp, grade } = makeComposer(renderer, scene, cam, { bloom: 0.55, radius: 0.5, threshold: 0.82 });
+const wrap = document.getElementById('glwrap');
+
+function flashAt(t) {
+  let f = 0;
+  const hit = (L, a, d) => { if (t >= L) f += a * Math.exp(-(t - L) / d); };
+  hit(BEAT.vs, 0.55, 0.09); BEAT.st.forEach((L) => hit(L, 0.1, 0.07)); hit(BEAT.boom, 0.9, 0.12);
+  return f;
+}
+function renderAt(time) {
+  if (time < 6.1) { renderer.setClearColor(0x000000, 1); renderer.clear(); return; }
+  const c = world.update(time, cam);
+  cam.updateMatrixWorld();
+  wrap.style.filter = c.blur > 0.05 ? `blur(${(c.blur * 5).toFixed(2)}px)` : 'none';
+  grade.uniforms.uFrame.value = Math.round(time * 30);
+  grade.uniforms.uFlash.value = flashAt(time);
+  comp.render();
+}
+window.addEventListener('hf-seek', (e) => renderAt(e.detail.time));
+renderAt(window.__hfThreeTime || 0);
+</script></body></html>

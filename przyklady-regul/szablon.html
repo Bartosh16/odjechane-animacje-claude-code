@@ -1,0 +1,126 @@
+<!DOCTYPE html><html lang="pl"><head><meta charset="UTF-8"><title>__RULE__ – przykład reguły</title><script src="assets/gsap.min.js"></script><style>
+@font-face{font-family:'Oxanium';src:url(assets/Oxanium-Bold.ttf) format('truetype');font-weight:200 800}
+@font-face{font-family:'Exo 2';src:url(assets/Exo2.ttf) format('truetype');font-weight:100 900}
+@font-face{font-family:'Share Tech Mono';src:url(assets/ShareTechMono.ttf) format('truetype')}
+*{box-sizing:border-box;margin:0}
+html,body{width:1920px;height:1080px;overflow:hidden;background:#0a0d12}
+#root{position:relative;width:100%;height:100%;overflow:hidden;background:#0a0d12}
+.bg{position:absolute;inset:0;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='6' height='920'%3E%3Crect y='18' width='6' height='1' fill='%23ffffff' opacity='.038'/%3E%3Crect y='99' width='6' height='1' fill='%2300d4e8' opacity='.07'/%3E%3Crect y='214' width='6' height='1' fill='%23ffffff' opacity='.05'/%3E%3Crect y='331' width='6' height='1' fill='%23ffffff' opacity='.06'/%3E%3Crect y='404' width='6' height='1' fill='%2300d4e8' opacity='.05'/%3E%3Crect y='549' width='6' height='1' fill='%23ffffff' opacity='.055'/%3E%3Crect y='641' width='6' height='1' fill='%23ffffff' opacity='.046'/%3E%3Crect y='738' width='6' height='1' fill='%2300d4e8' opacity='.06'/%3E%3Crect y='879' width='6' height='1' fill='%23ffffff' opacity='.05'/%3E%3C/svg%3E")}
+.head{position:absolute;left:120px;right:120px;top:70px}
+.rule{font-family:'Share Tech Mono';font-size:34px;letter-spacing:5px;color:#00f0ff;text-transform:uppercase;display:flex;align-items:center;gap:20px;opacity:0}
+.rule:before{content:'';width:54px;height:4px;background:#00d4e8}
+.desc{font-family:'Exo 2';font-weight:600;font-size:40px;color:#e6eef4;margin-top:16px;opacity:0}
+.half{position:absolute;top:250px;width:860px;height:690px;border-radius:22px;overflow:hidden;background:#0f1520;border:1px solid #1a2a3a}
+.half.l{left:70px}.half.r{right:70px;border-color:#00d4e855;box-shadow:0 0 60px rgba(0,212,232,.12)}
+.tag{position:absolute;left:28px;bottom:22px;font-family:'Share Tech Mono';font-size:26px;letter-spacing:3px;text-transform:uppercase;padding:8px 16px;border-radius:6px;z-index:5}
+.l .tag{color:#ff8199;background:#ff446618;border:1px solid #ff446655}
+.r .tag{color:#05080d;background:#00e8a2}
+.stage{position:absolute;inset:0;padding:70px 60px 90px;display:flex;flex-direction:column;justify-content:center}
+.big{font-family:'Oxanium';font-weight:800;font-size:92px;line-height:1.05;color:#fff}
+.big .acc{color:#00f0ff}
+.w{display:inline-block;margin-right:.24em}
+.cards{display:flex;gap:26px;justify-content:center}
+.cd{width:220px;height:220px;border-radius:22px;background:#0a121c;border:2px solid #00d4e866;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;font-family:'Exo 2';font-weight:700;font-size:34px;color:#fff}
+.cd i{width:74px;height:74px;border-radius:18px;background:#00d4e8;display:block}
+.cd:nth-child(2) i{background:#00e8a2;border-radius:50%}.cd:nth-child(3) i{background:#ff4466;border-radius:8px;transform:rotate(45deg) scale(.8)}
+.gl{position:relative;display:grid;font-family:'Oxanium';font-weight:800;font-size:112px;color:#fff;justify-items:center}
+.gl span{grid-area:1/1}
+.gl .c1{color:#00f0ff;mix-blend-mode:screen;opacity:0}.gl .c2{color:#ff4466;mix-blend-mode:screen;opacity:0}
+.fly{width:520px;height:300px;border-radius:20px;background:linear-gradient(135deg,#0f2030,#0a121c);border:2px solid #00d4e8;display:flex;align-items:center;justify-content:center;font-family:'Oxanium';font-weight:800;font-size:64px;color:#fff;margin:0 auto}
+.ghost{position:absolute;left:50%;top:50%;margin:-150px 0 0 -260px;opacity:0}
+.p3{position:absolute;inset:0;perspective:1100px}
+.w3{position:absolute;left:0;top:0;width:860px;height:690px;transform-style:preserve-3d}
+.c3{position:absolute;width:460px;height:260px;border-radius:18px;border:2px solid #00d4e8;background:linear-gradient(135deg,#102436,#0a121c);display:flex;align-items:center;justify-content:center;font-family:'Oxanium';font-weight:800;font-size:58px;color:#fff}
+.slide{position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
+.slide .c3{position:relative}
+</style></head><body><div id="root" data-composition-id="__ID__" data-width="1920" data-height="1080" data-duration="__DUR__" data-fps="30">
+<div class="bg"></div>
+<div class="head"><div class="rule" id="rule">__RULE__</div><div class="desc" id="desc">__DESC__</div></div>
+<div class="half l"><div class="stage" id="L"></div><div class="tag">PowerPoint</div></div>
+<div class="half r"><div class="stage" id="R"></div><div class="tag">__RULE__</div></div>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><filter id="mb" x="-50%" y="-20%" width="200%" height="140%"><feGaussianBlur id="mbb" stdDeviation="0 0"/></filter></svg>
+<audio id="sfx" src="assets/sfx.wav" data-start="0" data-duration="__DUR__" data-track-index="10" data-volume="1"></audio>
+</div><script>
+const RULE = '__RULE__', F = 1 / 30, T0 = 0.9;
+const tl = gsap.timeline({ paused: true });
+const hash = (n) => { const x = Math.sin(n * 127.1 + 311.7) * 43758.5453; return x - Math.floor(x); };
+const L = document.getElementById('L'), R = document.getElementById('R');
+tl.fromTo('#rule', { opacity: 0, x: -30 }, { opacity: 1, x: 0, duration: 0.4, ease: 'power3.out' }, 0.1);
+tl.fromTo('#desc', { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.45, ease: 'power3.out' }, 0.25);
+// PowerPoint: jedna krzywa, samo pojawianie się, równe odstępy
+const ppt = (els, t, gap = 0.45) => gsap.utils.toArray(els).forEach((e, i) => tl.fromTo(e, { opacity: 0 }, { opacity: 1, duration: 0.5, ease: 'none' }, t + i * gap));
+const words = (s, acc = []) => s.split(' ').map((w) => `<span class="w${acc.includes(w) ? ' acc' : ''}">${w}</span>`).join('');
+
+if (RULE === 'waterfall-entry') {
+  const txt = 'Opisz ujęcia, nie slajdy';
+  L.innerHTML = `<div class="big">${words(txt, ['ujęcia,'])}</div>`; R.innerHTML = L.innerHTML;
+  tl.fromTo(L.querySelector('.big'), { opacity: 0 }, { opacity: 1, duration: 0.8, ease: 'none' }, T0);
+  let t = T0;
+  R.querySelectorAll('.w').forEach((el, i, a) => { const last = i === a.length - 1, y = i === 0 ? 90 : last ? 76 : 56, d = i === 0 ? 0.2 : last ? 0.18 : 0.15;
+    tl.set(el, { opacity: 0 }, 0); tl.set(el, { opacity: 1, y }, t); tl.to(el, { y: 0, duration: d, ease: 'power4.out' }, t); t += d - F; });
+}
+if (RULE === 'spring-pop') {
+  const html = `<div class="cards">${['Prompt', 'Skill', 'Render'].map((n) => `<div class="cd"><i></i>${n}</div>`).join('')}</div>`;
+  L.innerHTML = html; R.innerHTML = html;
+  ppt(L.querySelectorAll('.cd'), T0, 0.5);
+  R.querySelectorAll('.cd').forEach((el, i) => tl.fromTo(el, { scale: 0, opacity: 0, y: 24 }, { scale: 1, opacity: 1, y: 0, duration: 0.55, ease: 'power3.out' }, T0 + i * 0.07));
+}
+if (RULE === 'chromatic-glitch') {
+  L.innerHTML = `<div class="gl"><span class="base">PowerPoint</span></div>`;
+  R.innerHTML = `<div class="gl"><span class="c1">PowerPoint</span><span class="c2">PowerPoint</span><span class="base">PowerPoint</span></div>`;
+  tl.fromTo(L.querySelector('.base'), { opacity: 0 }, { opacity: 1, duration: 0.6, ease: 'none' }, T0);
+  const base = R.querySelector('.base'), cps = [...R.querySelectorAll('.c1,.c2')];
+  tl.fromTo(base, { opacity: 0 }, { opacity: 1, duration: 0.01 }, T0);
+  // dwa uderzenia: wejście i akcent; offset kwantowany co 2 klatki (forma A), amplituda gaśnie power3.in
+  [[T0, 1, 0.55], [T0 + 1.9, 0.7, 0.4]].forEach(([t, A, d], h) => {
+    const amp = { a: 0 };
+    tl.set(cps, { opacity: 0.85 }, t);
+    tl.fromTo(amp, { a: A }, { a: 0, duration: d, ease: 'power3.in', immediateRender: false, onUpdate: () => {
+      const s = Math.floor(tl.time() / (2 * F)) + h * 101;
+      cps.forEach((c, k) => { c.style.transform = `translate(${((hash(s * 13 + k * 7) * 2 - 1) * 34 * amp.a).toFixed(1)}px, ${((hash(s * 29 + k) * 2 - 1) * 10 * amp.a).toFixed(1)}px)`; });
+      base.style.clipPath = amp.a > 0.15 ? `inset(${(hash(s) * 60).toFixed(0)}% 0 ${(hash(s + 5) * 30).toFixed(0)}% 0)` : 'none';
+    } }, t);
+    tl.set(cps, { opacity: 0 }, t + d + 0.01);
+    tl.fromTo(base, { scale: 1 + 0.12 * A }, { scale: 1, duration: 0.3, ease: 'power4.out', immediateRender: h === 0 }, t + d - 0.05);
+  });
+}
+if (RULE === 'motion-blur') {
+  L.innerHTML = `<div class="fly">Wjazd</div>`;
+  R.innerHTML = `<div class="ghost fly">Wjazd</div><div class="ghost fly">Wjazd</div><div class="ghost fly">Wjazd</div><div class="fly" id="lead">Wjazd</div>`;
+  tl.fromTo(L.querySelector('.fly'), { x: -900 }, { x: 0, duration: 0.7, ease: 'none' }, T0);
+  const lead = document.getElementById('lead'), blur = document.getElementById('mbb'), mv = { p: 0 }, e3 = gsap.parseEase('power3.out');
+  lead.style.filter = 'url(#mb)';
+  const ghosts = [...R.querySelectorAll('.ghost')];
+  tl.fromTo(mv, { p: 0 }, { p: 1, duration: 0.7, ease: 'none', onUpdate: () => {
+    const e = e3(mv.p), v = 3 * Math.pow(1 - mv.p, 2);                 // prędkość = pochodna power3.out
+    lead.style.transform = `translateX(${(-900 * (1 - e)).toFixed(1)}px)`;
+    blur.setAttribute('stdDeviation', `${(Math.min(40, v * 14)).toFixed(2)} 0`);
+    ghosts.forEach((g, k) => { const ek = e3(Math.max(0, mv.p - 0.06 * (k + 1))); g.style.transform = `translateX(${(-900 * (1 - ek)).toFixed(1)}px)`; g.style.opacity = String(mv.p < 0.98 ? 0.28 / (k + 1) : 0); });
+  } }, T0);
+  lead.style.transform = 'translateX(-900px)';
+}
+if (RULE === '3d-camera-flight') {
+  const names = ['Ujęcie 1', 'Ujęcie 2', 'Ujęcie 3'];
+  L.innerHTML = names.map((n) => `<div class="slide"><div class="c3">${n}</div></div>`).join('');
+  const sl = L.querySelectorAll('.slide'), SEG = 1.5;
+  sl.forEach((s, i) => { tl.fromTo(s, { opacity: 0 }, { opacity: 1, duration: 0.4, ease: 'none' }, T0 + i * SEG); if (i < 2) tl.to(s, { opacity: 0, duration: 0.4, ease: 'none' }, T0 + i * SEG + 1.0); });
+  // prawa: jeden świat 3D, karty w głąb; kamera = czysta funkcja czasu, cel kamery to środek karty
+  const POS = [[200, 215, 0, 0], [1150, 90, -1000, -30], [2100, 300, -2000, 24]];
+  R.innerHTML = `<div class="p3"><div class="w3" id="w3">${names.map((n, i) => `<div class="c3" style="left:${POS[i][0]}px;top:${POS[i][1]}px;transform:translateZ(${POS[i][2]}px) rotateY(${POS[i][3]}deg)">${n}</div>`).join('')}</div></div>`;
+  const w3 = document.getElementById('w3'), cam = { k: 0 }, io = gsap.parseEase('power3.inOut'), blur = document.getElementById('mbb');
+  const P = (i) => ({ x: POS[i][0] + 230, y: POS[i][1] + 130, z: POS[i][2], ry: POS[i][3] });
+  const place = (k) => {
+    const i = Math.min(1, Math.floor(k)), f = Math.min(1, (k - i) / 0.7), e = io(f), env = Math.sin(Math.PI * f), a = P(i), b = P(i + 1);
+    const cx = a.x + (b.x - a.x) * e, cy = a.y + (b.y - a.y) * e, cz = a.z + (b.z - a.z) * e, ry = a.ry + (b.ry - a.ry) * e;
+    w3.style.transformOrigin = `${cx}px ${cy}px ${cz}px`;
+    w3.style.transform = `translate3d(${430 - cx}px, ${345 - cy}px, ${-cz - 420 * env}px) rotateX(${12 * env}deg) rotateZ(${-5 * env * (i ? -1 : 1)}deg) rotateY(${-ry}deg)`;
+    blur.setAttribute('stdDeviation', `${(env * env * 12).toFixed(2)} 0`);
+  };
+  place(0);
+  tl.fromTo(R.querySelector('.p3'), { opacity: 0 }, { opacity: 1, duration: 0.35, ease: 'power3.out' }, T0);
+  w3.parentElement.style.filter = 'url(#mb)';
+  // przelot w pierwszych 70% segmentu, potem lądowanie i postój; startuje wtedy, gdy lewa strona zaczyna gasić slajd
+  tl.fromTo(cam, { k: 0 }, { k: 2, duration: 2 * SEG, ease: 'none', immediateRender: false, onUpdate: () => place(cam.k) }, T0 + 1.0);
+}
+window.__timelines['__ID__'] = tl;
+</script></body></html>
